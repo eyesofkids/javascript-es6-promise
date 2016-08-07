@@ -1,0 +1,10 @@
+{
+    "plugins": [
+        "anchorjs"
+    ],
+    "pluginsConfig": {
+        "theme-default": {
+            "showLevel": true
+        }
+    }
+}
