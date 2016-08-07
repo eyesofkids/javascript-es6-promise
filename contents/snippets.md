@@ -22,8 +22,6 @@ function promiseCall(f, ...args) {
 
 ## 回調地獄(Callback hell)的改寫
 
-你或許有聽過Promise是可以解決一種名稱為"回調地獄(Callback hell)"或是"金字塔(pyramid of doom)"的結構，
-
 ```js
 function(err, response) { }
 ```

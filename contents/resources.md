@@ -13,8 +13,14 @@
 - [We have a problem with promises](https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html)
 - [Promise Ponderings, (Anti-)Patterns, and Apologies](https://sdgluck.github.io/2015/08/24/promise-ponderings-patterns-apologies/)
 
-## 入門教學&概念
+## 教學&概念
 
-- [You're Missing the Point of Promises](https://blog.domenic.me/youre-missing-the-point-of-promises/)
 - [ES6 Promises](http://www.datchley.name/es6-promises/)
 - [Promises for asynchronous programming (Exploring ES6)](http://exploringjs.com/es6/ch_promises.html)
+- [JavaScript Promises](http://www.html5rocks.com/en/tutorials/es6/promises/)
+
+### 內容可能過時/舊
+
+- [ECMAScript 6 promises (2/2): the API](http://www.2ality.com/2014/10/es6-promises-api.html)
+- [You're Missing the Point of Promises](https://blog.domenic.me/youre-missing-the-point-of-promises/)
+- [JavaScript Promise迷你书（中文版）](http://liubin.org/promises-book/)
