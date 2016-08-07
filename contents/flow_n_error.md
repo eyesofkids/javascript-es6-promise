@@ -26,7 +26,7 @@ p1.then((val) => {
 //done
 ```
 
-原先在錯誤處理章節中，對於`throw`語句的說明是，`throw`語句執行後會直接進到最近的`catch`方法的區塊中，執行區塊中程式碼後中斷之後程式碼。但這個理解是針對一般的同步程式結構，對異步的Promise結構並不適用。所以**並不會**中斷Promise結構的繼續執行，上面最後有個`then`中會輸出'done'字串，它依然會輸出。而且這裡的`throw`語句並不會瀏覽器的錯誤主控台出現錯誤訊息。
+原先在錯誤處理時，對於`throw`語句的說明是，`throw`語句執行後會直接進到最近的`catch`方法的區塊中，執行中的程式會中斷之後程式碼執行。但這個理解是針對一般的同步程式執行，對異步的Promise執行結構並不適用。也就是在Promise的連鎖執行中，"**並不會**"中斷Promise連鎖結構，還會繼續執行，上面的範例中，最後有個`then`中會輸出'done'字串，它依然會輸出。此外，這裡的`throw`語句並不會在瀏覽器的錯誤主控台出現任何的錯誤訊息。
 
 使用`throw`語句與用`reject`方法似乎是同樣的結果，都會導致promise物件的狀態變為rejected(已拒絕)，那麼這兩種方式有差異嗎？
 
@@ -36,9 +36,9 @@ p1.then((val) => {
 
 而`reject`則是一個一旦呼叫了就會讓Promise物件狀態變為Rejected(已拒絕)的方法，用起來像是一般的可呼叫的方法。
 
-根據上面的解說，這兩種方式明顯是用在不同的場合的，實際上也無關優劣性。
+根據上面的解說，這兩種方式明顯是用在不同的場合的，實際上也無關優劣性，視情況使用就是。
 
-其次，而在Promise中(建構函式或then)使用其他異步callback的API時會出現明顯的差異，這時候完全不能使用`throw`語句，以下的範例你可以試試:
+不過，在Promise中(建構函式或then中)使用其他異步callback的API時會出現明顯的差異，這時候完全不能使用`throw`語句，以下的範例你可以試試:
 
 ```js
 const p1 = new Promise(function(resolve, reject){
@@ -59,7 +59,7 @@ p1.then((val) => {
 
 ## 執行流程&連鎖反應
 
-如果你有看過其他的Promise教學，用`then`方法與`catch`來組成一個有錯誤處理的流程，例如像以下的範例程式，來自[JavaScript Promises](http://www.html5rocks.com/en/tutorials/es6/promises/):
+如果你有看過其他的Promise教學，使用`then`方法與`catch`來組成一個有錯誤處理的流程，例如像以下的範例程式，來自[JavaScript Promises](http://www.html5rocks.com/en/tutorials/es6/promises/):
 
 ```js
 asyncThing1().then(function() {
@@ -79,9 +79,9 @@ asyncThing1().then(function() {
 });
 ```
 
-在這篇文章中[JavaScript Promises](http://www.html5rocks.com/en/tutorials/es6/promises/)的也有一個這個範例的流程圖。
+在這篇文章中的作者也畫了一個這個範例的流程圖，你可以看一下還滿複雜的。
 
-我建議不要單純用只有onFulfilled函式的`then`方法，以及`catch`方法來看整體流程，其實會有點混亂。從完整的`then`方法可以把流程看得更清楚，每個`then`方法(或`catch`方法)都會回傳一個完整的Promise物件，當新的Promise往下個`then`方法傳遞時，因原來其中程式碼執行的不同，狀態也不同。
+我並不是說這張流程圖畫得不好，只是我建議初學者不要單純用只有onFulfilled函式的`then`方法，以及`catch`方法來看整體流程，其實很容易造成混亂。假設你今天已經滿有基礎了，或是頭腦非常清楚，當然不會這樣。從完整的`then`方法，的確可以把整個流程看得更清楚，每個`then`方法(或`catch`方法)都會回傳一個完整的Promise物件，當新的Promise往下個`then`方法傳遞時，因為其中程式碼執行的不同，狀態也不同。
 
 > Promises/A+標準 2.2.7
 >

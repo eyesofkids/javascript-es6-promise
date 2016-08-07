@@ -11,7 +11,7 @@
    * [Promise物件建立與基本使用](contents/basic_usage.md)
    * [執行流程與錯誤處理](contents/flow_n_error.md)
    * [深入then方法](contents/then_adv.md)
-   * [靜態方法Promise.resolve與Promise.reject](contents/promise_resolve_n_reject.md)
+   * [靜態方法 Promise.resolve與Promise.reject](contents/promise_resolve_n_reject.md)
    * [靜態方法 Promise.all與Promise.race](contents/promise_all_n_race.md)
    * [執行順序 Chaining(連鎖)或Branching(分支)](contents/chain_n_branch.md)
    * [反樣式(anti-pattern)與最佳實踐](contents/anti_pattern.md)
