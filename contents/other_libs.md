@@ -27,7 +27,7 @@
 
 實際上會出在設計出發點與本質並不相同，bluebird以較有效率而且節省資源的方式來設計，不只是原生的ES6 Promise，其他的函式庫都沒有辦法這麼快又節省資源。根據[這篇bluebird的issue](https://github.com/petkaantonov/bluebird/issues/381)中的開發者指出，以Q與bluebird的設計比較，Q會慢bluebird幾十倍是因為Q針對瀏覽器提供某些安全上的設計，bluebird則是極致的追求執行效率，假設所有程式碼都是在完全可信任的環境例如Node.js中執行。或許也因為如此，在網路上很多類似的問答中，通常建議只在伺服器端(Node.js)使用bluebird，而瀏覽器端建議使用原生ES6 Promise或Q。
 
-當然，經過一年之後的原生ES6 Promise，其效率與記憶體消耗問題已有了很大的改善，根據最近Chrome瀏覽器使用的V8引擎在[版本53發佈的消息](http://v8project.blogspot.tw/2016/07/v8-release-53.html)，目前的原生ES6 Promise進行最佳化後，效能改善了20-40%。也就是說未來的原生ES6 Promise在經過最佳化後，與外部函式庫的執行效率並不會相差太遠，這個消息無疑為原生ES6 Promise打了一劑強心針。
+當然，經過一年之後的原生ES6 Promise，其效率與記憶體消耗問題已有了很大的改善，根據最近(2016/7)Chrome瀏覽器使用的V8引擎在[版本53發佈的消息](http://v8project.blogspot.tw/2016/07/v8-release-53.html)，目前的原生ES6 Promise進行最佳化後，效能改善了20-40%。也就是說未來的原生ES6 Promise在經過最佳化後，與外部函式庫的執行效率並不會相差太遠，這個消息無疑為原生ES6 Promise打了一劑強心針。
 
 所以如果你要要使用外部函式庫，其理由可能是以下幾個:
 
@@ -35,6 +35,6 @@
 - 資源存取類型的函式庫或模組，現在都會提供具有Promise的API，例如資料庫、檔案處理、網路資源存取的模組。例如[MongoDB Node.JS Driver](https://mongodb.github.io/node-mongodb-native/)就是雙模式的。有一些AJAX的函式庫也都是用Promise的架構，例如[axios](https://github.com/mzabriskie/axios)，或是像新式的標準Fetch API，也是基於Promise的。
 - 工具類型的函式庫，現在可能也有提供相容於Promise標準的物件，例如jQuery(3.0之後)。
 
-雖然jQuery 3.0中實作了符合Promises/A+標準的Promise物件，但是jQuery並非單純用於Promise架構的外部函式庫，而且3.0也才剛發佈不久，再加上長期以來，jQuery有很多自己設計的擴充API，API的名稱與標準中有些不同。如果你原本就有使用jQuery，是可以使用它新版本中的deferred物件與Promise物件的API，但要可能還是需要具備Promise的使用基礎知識比較好。
+雖然jQuery 3.0中實作了符合Promises/A+標準的Promise物件，但是jQuery並非單純用於Promise架構的外部函式庫，而且3.0也才剛發佈不久，再加上長期以來，jQuery有很多自己設計的擴充API，API的名稱與標準中有些不同。如果你原本就有使用jQuery，是可以使用它新版本中的deferred物件與Promise物件的API，但可能還是需要具備Promise的使用基礎知識比較好。
 
-原生ES6 Promise會被認為是一個基礎，如果是在很簡單的執行流程，或許就已經夠用了。學習語法和使用方法後，以這個基礎你可以因應不同的需求，使用專屬的資源存取模組(例如資料庫)。而這些專門使用在Promise擴充的函式庫(例如bluebird)，雖然提供了豐富API，但使用它們的情況相信會愈來愈少，這也是為什麼後來這些函式庫都停止維護的主要原因。或許如果你現在需要在伺服器端(Node.js)中，馬上就要使用高效能或豐富API的外部函式庫，那麼有可能bluebird會是比較好的選擇。原生ES6 Promise仍然需要一點時間，除了它的最佳化尚未完全完成之外，它的API的確真的很少，面對複雜的應用情況可能會不符使用。
+原生ES6 Promise會被認為是一個基礎，如果是在很簡單的執行流程，或許就已經夠用了。學習語法和使用方法後，以這個基礎你可以因應不同的需求，使用專屬的資源存取模組(例如資料庫)。而這些專門使用在Promise擴充的函式庫，雖然額外提供了更多可使用的API，但使用它們的情況相信會愈來愈少，這也是為什麼後來這些函式庫都停止維護的主要原因。如果你現在需要在伺服器端(Node.js)中，馬上就要使用高效能或豐富API的外部函式庫，那麼有可能bluebird會是比較好的選擇。原生ES6 Promise仍然需要一點時間，除了它的最佳化尚未完全完成之外，它的API的確真的少，面對複雜的應用情況可能會不符使用。

@@ -71,4 +71,4 @@ p3.then((value) => {
 
 在Promise中使用連鎖的架構，就是一般稱為sequential(序列)執行的結構，而Branching(分支)並不是parallel(並行)的執行結構，真正的parallel(並行)結構應該是使用`Promise.all`方法的語法。序列執行可以保証一個Promise接著另一個執行，也就是"同步中的異步"結構。Branching(分支)的執行順序就很亂了，要看程式碼執行的順序來決定。
 
-> sequential(序列)執行結構，也有另一個名稱是waterfall(瀑布)
+> 註: sequential(序列)執行結構，也有另一個名稱是waterfall(瀑布)

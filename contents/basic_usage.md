@@ -95,11 +95,15 @@ function resolver(resolve, reject){
 
 //初始化內部雛形物件用的函式
 function init(promise, resolver){
+  try {
     resolver(function resolvePromise(value){
       _resolve(promise, value);
     }, function rejectPromise(reason) {
       _reject(promise, reason);
     })
+  } catch(e) {
+    _reject(promise, e);
+  }
 
     return promise
 }

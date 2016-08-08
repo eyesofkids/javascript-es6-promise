@@ -1,8 +1,8 @@
 # 靜態方法 Promise.all與Promise.race
 
-> Promise.all與Promise.race的參數值，通常使用陣列結構，而陣列中放的要不是就一般值，要不就是Promise物件
+> Promise.all與Promise.race的參數值，通常使用陣列結構作為傳入參數，而陣列中要不是就一般的值，要不就是Promise物件
 
-`Promise.all`是並行運算使用的靜態方法，它的語法如下(出自[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)):
+`Promise.all`是"**並行運算**"使用的靜態方法，它的語法如下(出自[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)):
 
 ```
 Promise.all(iterable);
@@ -12,7 +12,7 @@ Promise.all(iterable);
 
 - 陣列中的索引值與執行順序無關
 - 陣列中的值如果不是Promise物件，會自動使用`Promise.resolve`方法來轉換
-- 執行過程中只要有"**其中一個(any)**"陣列中的Promise物件執行，發生錯誤例外，或是有Promise的reject情況，立即變為rejected狀態，往下回傳
+- 執行過程中只要有"**其中一個(any)**"陣列中的Promise物件執行發生錯誤例外，或是有Promise的reject情況，會立即回傳一個rejected狀態promise物件
 - 實現完成後，接下來的then方法會獲取到的值是陣列值
 
 ```js
@@ -43,7 +43,7 @@ Promise.all('i am a string').then((value) => {
 //結果: ["i", " ", "a", "m", " ", "a", " ", "s", "t", "r", "i", "n", "g"]
 ```
 
-`Promise.race`它的真正名稱應該是對比`Promise.all`的"any"，`Promise.all`指的是"**所有的**"陣列傳入參數的Promise物件都要解決(resolve)完了才進行下一步，`Promise.race`則是"**任何一個**"陣列傳入參數的Promise物件有解決，就會到下一步去。用"race(競賽)"這個字詞是比喻就像在賽跑一樣，只要有一個參賽者到達終點就行了。
+`Promise.race`它的真正名稱應該是對比`Promise.all`的"any"，`Promise.all`指的是"**所有的**"陣列傳入參數的Promise物件都要解決(resolve)完了才進行下一步，`Promise.race`則是"**任何一個**"陣列傳入參數的Promise物件有解決，就會到下一步去。用"race(競賽)"這個字詞是比喻就像在賽跑一樣，只要有一個參賽者到達終點就行了，當然它的回傳值也只會是那個優勝者而已。
 
 `Promise.race`的規則與`Promise.all`相同，只不過實現的話，下一步的`then`方法只會獲取跑最快的(最快實現的)的那個值，一個簡單的範例如下:
 
@@ -61,7 +61,7 @@ Promise.race([p1, p2, p3]).then((value) => {
 })
 ```
 
-其實上面這個`Promise.race`範例，你把p1與p2的位置對調，就會發現最後的結果正好會對調，也就是說正好是只使用`Promise.resolve`方法的轉換情況，是和陣列中的前後順序有關的。不過因為`Promise.race`只能選出一個優腃者，p1與p2應該算同時，所以也只能以陣列的順序為順序。
+上面這個`Promise.race`範例，你把p1與p2的位置對調，就會發現最後的結果正好會對調，也就是說正好是只使用`Promise.resolve`方法的轉換情況，是和陣列中的前後順序有關的。不過因為`Promise.race`只能選出一個優腃者，p1與p2應該算同時，所以也只能以陣列的順序為順序。
 
 > 註: `Promise.race`應該要多一個規則，如果陣列中有同時實現的promise值，以陣列中的順序優先者為回傳值
 

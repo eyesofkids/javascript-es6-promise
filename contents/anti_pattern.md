@@ -30,7 +30,7 @@ Promise.all([firstThingAsync(), secondThingAsync()]).then(function(value) {
 
 ### 解決之道之二
 
-如果你希望`secondThingAsync`函式是可以獲得`firstThingAsync`函式先執行完的結果result1，可以先解決`firstThingAsync`函式，得到Promise物件與結果result1後，再用`Promise.all`方法來保証`secondThingAsync`函式與結果result1可以並行。這個結構有點複雜，而且這是因為`then`方法可以回傳一個Promise物件。
+如果你希望`secondThingAsync`函式是可以獲得`firstThingAsync`函式先執行完的結果result1，可以先解決`firstThingAsync`函式，得到Promise物件與結果result1後，再用`Promise.all`方法來保証`secondThingAsync`函式與結果result1可以並行。這個結構有點複雜，而且這是因為`then`方法可以回傳一個Promise物件，所以可以這樣用。
 
 ```js
 firstThingAsync().then((result1) => {
@@ -96,7 +96,7 @@ somePromise().then(() => {
 
 ### 解決之道
 
-then方法中的函式傳入參數，總是要有回傳值，要不然，就throw出錯誤也行，最後有catch方法可以接住錯誤。
+`then`方法中的函式傳入參數，總是要有回傳值，要不然，就用`throw`拋出錯誤也行，最後有catch方法可以接住錯誤。
 
 ```js
 somePromise().then(() => {
@@ -136,7 +136,7 @@ firstThingAsync().then(function() {
 
 如果你把所有的`then`方法都只用於fulfilled(已實現)情況，而用`catch`方法用於rejected情況，這是個好主意，它可以讓你的程式碼更清楚易讀。
 
-但至少每個連鎖的結構中，都至少要有個`catch`方法，而且最好是最後一個，因為`catch`方法只能捕捉到在前面步驟的錯誤。
+但至少每個連鎖的結構中，都至少要有個`catch`方法，而且最好是最後一個，或倒數第二個(最後一個用於通知流程執行完成)，因為`catch`方法只能捕捉到在前面步驟的錯誤。
 
 ```js
 firstThingAsync().then(function() {
@@ -152,9 +152,9 @@ firstThingAsync().then(function() {
 
 當然這個樣式並非絕對的反樣式，簡單的程式碼上，使用匿名函式作為回調函式並沒有太大問題。
 
-為何要給回調函式一個名稱？理由可能有幾個。首先，當錯誤發生時，你容易知道是哪一個函式出錯，在錯誤的堆疊上它會顯示出函式的名稱。其次，你把回調函式拆出來寫，程式碼的可閱讀性會更高，全部擠在`then`或`catch`方法的傳入參數中，如果回調函式的程式碼內容很多時，似乎是有點太擠了。
+但為何要給回調函式一個名稱？理由可能有幾個。首先，當錯誤發生時，你容易知道是哪一個函式出錯，在錯誤的堆疊上它會顯示出函式的名稱。其次，你把回調函式拆出來寫，程式碼的可閱讀性會更高，全部擠在`then`或`catch`方法的傳入參數中，如果回調函式的程式碼內容很多時，似乎是有點太擠了。
 
-此外，使用箭頭函式在回調函式中也是一個不錯的語法，它可以讓你少打很多`function`這字詞，你已經在上面的內容中看到很多次，這可以讓程式碼看起來更清爽好讀。
+此外，使用箭頭函式在回調函式中也是一個不錯的語法，你可以學習著如何使用它，它可以讓你少打很多`function`這字詞，你已經在上面的內容中看到很多次，這可以讓程式碼看起來更清爽好閱讀。
 
 ```js
 function firstThingAsync(){
