@@ -12,7 +12,9 @@
 - 錯誤處理
 - 事件處理與事件迴圈(Event Loop)
 
-如果你對JavaScript程式語言有興趣入門，你可以參考這本書[從ES6開始的JavaScript學習生活](https://www.gitbook.com/book/eyesofkids/javascript-start-from-es6/details)。
+如果你對JavaScript程式語言有興趣入門，你可以參考這本書[從ES6開始的JavaScript學習生活](https://www.gitbook.com/book/eyesofkids/javascript-start-from-es6/details)中的內容。
+
+## 授權規定
 
 本電子書的使用的授權規定如下:
 
