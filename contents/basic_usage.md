@@ -236,7 +236,23 @@ promise.then(function(value) {
 
 onRejected函式，也就是`then`方法中第二個函式的傳入參數，也有用回傳值往下傳遞的特性，不過因為它是使用於錯誤的處理，除非你是有要用來修正錯誤之類的理由，不然說實在這樣作會有點混亂，因為不論是onFulfilled函式或onRejected函式的傳遞值，都只會記錄到新產生的那個Promise物件之中，對"值"來說並沒有區分是onFulfilled回傳的來的，還是onRejected回傳來的。當一直有回傳值時就可以一直傳遞回傳值，當出現錯誤時，就會因為獲取不到之前的值，會導致之前的值消失不見。
 
-你可能看不懂我在說什麼，用範例來說明比較快理解。下面的範例中，第二個`then`方法假設在中途發生錯誤，這樣會導致下一個執行被強迫只能使用`catch`方法，catch方法中的onRejected函式是只能得到錯誤而得不到值的，所以導致最後一備`then`方法中的onFulfilled函式是獲取不到之前的值。這一段如果你並不是很理解，你可以先看其他章節的內容，再回來這裡重新執行一次這個範例。
+`then`方法中的兩個函式傳入參數，第1個onFulfilled函式是在promise物件有值的情況下才會執行，也就是進入到fulfilled(已實現)狀態。第2個onRejected函式則是在promise物件發生錯誤、失敗，才會執行。這兩個函式都可以寫出來，但為了方便進行多個不同程式碼的連鎖，通常在只使用`then`方法時，都只寫第1個函式傳入參數。
+
+而錯誤處理通常交給另一個`catch`方法來作，`catch`只需要一個函式傳入參數，(出自[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch)):
+
+```js
+p.catch(onRejected);
+
+p.catch(function(reason) {
+   // rejection
+});
+```
+
+`catch`方法相當於`then(undefined, onRejected)`，也就是`then`方法的第一個函式傳入參數沒有給定值的情況，它算是個`then`方法的語法糖。`catch`方法正如其名，它就是要取代同步`try...catch`語句用的異步例外處理方式。
+
+> 註: 不過也因為`catch`方法與`try...catch`中的`catch`同名，造成IE8以下的瀏覽器產生名稱上的衝突與錯誤。有些函式庫會用`caught`這個名稱來取代它，或是乾脆用`then`方法就好。
+
+對於值的傳遞情況，需要注意是在中途發生有promise物件有rejected(已拒絕)的情況。在下面的範例中，第二個`then`方法假設在中途發生錯誤，這樣會導致下一個執行被強迫只能使用`catch`方法，`catch`方法中的回調(相當於`then`中的onRejected函式)是只能得到理由(錯誤)而得不到值的，所以導致最後一個`then`方法中的onFulfilled函式獲取不到之前的值。這一段內容如果你並不是很理解，你可以先看其他章節的內容，再回來這裡重新執行一次這個範例。
 
 ```js
 const p1 = new Promise((resolve, reject) => {
@@ -258,19 +274,3 @@ p1.then((val) => {
     })
     .then((val) => console.log(val, 'done')) //val是undefined，回傳值消息
 ```
-
-`then`方法中的兩個函式傳入參數，第1個onFulfilled函式是在promise物件有值的情況下才會執行，也就是進入到fulfilled(已實現)狀態。第2個onRejected函式則是在promise物件發生錯誤、失敗，才會執行。這兩個函式都可以寫出來，但為了方便進行多個不同程式碼的連鎖，通常在只使用`then`方法時，都只寫第1個函式傳入參數。
-
-而錯誤處理通常交給另一個`catch`方法來作，`catch`只需要一個函式傳入參數，(出自[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch)):
-
-```js
-p.catch(onRejected);
-
-p.catch(function(reason) {
-   // rejection
-});
-```
-
-`catch`方法相當於`then(undefined, onRejected)`，也就是`then`方法的第一個函式傳入參數沒有給定值的情況，它算是個`then`方法的語法糖。`catch`方法正如其名，它就是要取代同步`try...catch`語句用的異步例外處理方式。
-
-> 註: 不過也因為`catch`方法與`try...catch`中的`catch`同名，造成IE8以下的瀏覽器產生名稱上的衝突與錯誤。有些函式庫會用`caught`這個名稱來取代它，或是乾脆用`then`方法就好。
