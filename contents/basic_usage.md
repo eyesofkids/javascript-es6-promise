@@ -155,7 +155,7 @@ function init(promise, resolver){
 //這個就是稱為executor的傳入參數
 function resolver(rs, rj) {
     rs(10)
-        //reject(new Error('error occured !'))
+  //rj(new Error('error occured !'))
 }
 
 //初始化內部雛形物件用的函式
