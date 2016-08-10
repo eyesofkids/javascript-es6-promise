@@ -1,13 +1,10 @@
 {
     "plugins": [
-        "anchorjs", "disqus"
+        "anchorjs"
     ],
     "pluginsConfig": {
         "theme-default": {
             "showLevel": true
-        },
-        "disqus": {
-            "shortName": "jsbook-1"
         }
     }
 }
