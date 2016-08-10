@@ -15,6 +15,6 @@
    * [靜態方法 Promise.all與Promise.race](contents/promise_all_n_race.md)
    * [執行順序 Chaining(連鎖)或Branching(分支)](contents/chain_n_branch.md)
    * [反樣式(anti-pattern)與最佳實踐](contents/anti_pattern.md)
-   * 實例與程式碼片段~(未完成)
+   * [實例與程式碼片段](contents/snippets.md)
    * [Promise外部函式庫議題](contents/other_libs.md)
    * [參考資源](contents/resources.md)
