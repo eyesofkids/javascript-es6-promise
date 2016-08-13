@@ -4,7 +4,7 @@
 
 > Promise中的所有回調函式，都是異步執行的
 
-我需要再次強調，並非所有的使用callbacks(回調)函式的API都是異步執行的。在JavaScript中，除了DOM事件處理中的回調函式9成9都是異步執行的，只有API中使用回調函式不一定是異步執行的，也有同步執行的例如`Array.forEach`，要讓開發者自訂的callbacks(回調)的執行轉變為異步，有以下幾種方式:
+我需要再次強調，並非所有的使用callbacks(回調)函式的API都是異步執行的。在JavaScript中，除了DOM事件處理中的回調函式9成9都是異步執行的，語言內建API中使用的回調函式不一定是異步執行的，也有同步執行的例如`Array.forEach`，要讓開發者自訂的callbacks(回調)的執行轉變為異步，有以下幾種方式:
 
 - 使用計時器(timer)函式: `setTimeout`, `setInterval`
 - 特殊的函式: `nextTick`, `setImmediate`
