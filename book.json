@@ -1,6 +1,6 @@
 {
     "plugins": [
-        "anchorjs", "disqus"
+        "anchorjs", "disqus", "ga"
     ],
     "pluginsConfig": {
         "theme-default": {
@@ -8,6 +8,9 @@
         },
         "disqus": {
             "shortName": "jsbook-1"
+        },
+        "ga": {
+            "token": "UA-273248-20"
         }
     }
 }
