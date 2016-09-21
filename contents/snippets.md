@@ -13,7 +13,7 @@ function delay(ms) {
 
 > 出自[Writing Promise-Using Specifications](https://www.w3.org/2001/tag/doc/promises-guide#example-delay)
 
-如果要讓delay可以有回傳值，可以用以下的範例:
+如果要讓`delay`可以有回傳值，可以用以下的範例:
 
 ```js
 function delay(ms) {
