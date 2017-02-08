@@ -79,7 +79,7 @@ initPromise1(1).then((value) => {
 })
 ```
 
-如果此時傳入的`someObject`不是物件類型，方式二會直接throw出例外，造成程式中斷，與Promise結構中對錯誤的處理方式不同，只有方式一或方式二可以正常的處理錯誤。
+如果此時傳入的`someObject`不是物件類型，方式二會直接throw出例外，造成程式中斷，與Promise結構中對錯誤的處理方式不同，只有方式一或方式三可以正常的處理錯誤。
 
 上面的例子是太過簡單，如果`initPromise`函式中的程式碼很複雜的時候，你在回傳`Promise.reject`或`Promise.resolve`前發生例外，是完全沒辦法控制的。
 
