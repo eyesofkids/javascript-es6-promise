@@ -4,18 +4,9 @@ title: Promise外部函式庫議題
 sidebar_label: Promise外部函式庫議題
 ---
 
-在 ES6 標準正式定案將 Promise 特性加入後，再加上各家瀏覽器紛紛發佈已附有實作 Promise 特性的新版本後，約莫 2015 年中開始，有許多 Promise 相關的外部函式庫，有逐漸的發佈趨緩，或是停止再維護的現象。以下列出幾套常見有遵照 Promise 標準，而且有進行擴充的函式庫(單純只加速或 polyfill 的不列入)，以及它們的發佈情況:
+在 ES6 標準正式定案將 Promise 特性加入後，再加上各家瀏覽器紛紛發佈已附有實作 Promise 特性的新版本後，約莫 2015 年中開始，有許多 Promise 相關的外部函式庫，有逐漸的發佈趨緩，或是停止再維護的現象。
 
-- [q](https://github.com/kriskowal/q/releases): 維護停止，最後發佈版本在 2015/5
-- [bluebird](https://github.com/petkaantonov/bluebird/releases): 維護持續(唯一)，最後發佈版本在 2016/6
-- [when](https://github.com/cujojs/when/releases): 維護停止，最後發佈版本在 2015/12
-- [then-promise](https://github.com/then/promise/releases): 維護停止，最後發佈版本在 2015/12
-- [rsvp.js](https://github.com/tildeio/rsvp.js/releases): 維護停止，最後發佈版本在 2016/2
-- [vow](https://github.com/dfilatov/vow/releases): 維護停止，最後發佈版本在 2015/12
-
-> 註: 維護停止，代表 6 個月左右都沒有新的發佈版本
-
-由列表中可以看到至 2016/7 目前唯一還在在更新版本的，就只有[bluebird](https://github.com/petkaantonov/bluebird/releases)而已。下面分析為何會有這個現象發生，以及到底你是要選擇用原生的 ES6 Promise 就好，還是要使用其他外部函式庫中的 Promise 相關 API 的一些建議。
+目前唯一還在在更新版本的，就只有[bluebird](https://github.com/petkaantonov/bluebird/releases)而已。下面分析為何會有這個現象發生，以及到底你是要選擇用原生的 ES6 Promise 就好，還是要使用其他外部函式庫中的 Promise 相關 API 的一些建議。
 
 根據一篇在 2015/4 月網路上的問答[為何原生的 ES6 Promise 會比 bluebird 慢而且更耗記憶體](http://programmers.stackexchange.com/questions/278778/why-are-native-es6-promises-slower-and-more-memory-intensive-than-bluebird)的內容，回答的內容是由 bluebird 函式庫的創作者所寫的。當時(2015 初)的原生 ES6 Promise，又慢又耗記憶體的主因如下:
 
