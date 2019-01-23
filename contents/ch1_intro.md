@@ -1,5 +1,5 @@
 ---
-id: intro
+id: ch1_intro
 title: 前言
 sidebar_label: 前言
 ---

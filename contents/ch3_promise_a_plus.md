@@ -1,5 +1,5 @@
 ---
-id: promise_a_plus
+id: ch3_promise_a_plus
 title: Promises/A+標準定義
 sidebar_label: Promises/A+標準定義
 ---

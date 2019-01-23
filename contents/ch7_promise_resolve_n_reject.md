@@ -1,4 +1,8 @@
-# 靜態方法 Promise.resolve 與 Promise.reject
+---
+id: ch7_promise_resolve_n_reject
+title: Promise.resolve 與 Promise.reject
+sidebar_label: Promise.resolve 與 Promise.reject
+---
 
 > `Promise.reject`或`Promise.resolve`只用於單純的傳入物件、值(理由)或外部的 thenable 物件，轉換為 Promise 物件的場合
 

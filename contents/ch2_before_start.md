@@ -1,5 +1,5 @@
 ---
-id: before_start
+id: ch2_before_start
 title: 基本概念
 sidebar_label: 基本概念
 ---

@@ -1,4 +1,8 @@
-# 參考資源
+---
+id: ch13_resources
+title: 參考資源
+sidebar_label: 參考資源
+---
 
 ## 標準&函式庫
 
@@ -23,4 +27,4 @@
 
 - [ECMAScript 6 promises (2/2): the API](http://www.2ality.com/2014/10/es6-promises-api.html)
 - [You're Missing the Point of Promises](https://blog.domenic.me/youre-missing-the-point-of-promises/)
-- [JavaScript Promise迷你书（中文版）](http://liubin.org/promises-book/)
+- [JavaScript Promise 迷你书（中文版）](http://liubin.org/promises-book/)
