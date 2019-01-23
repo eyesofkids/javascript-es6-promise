@@ -89,6 +89,8 @@ initPromise1(1)
 
 上面的例子是太過簡單，如果`initPromise`函式中的程式碼很複雜的時候，你在回傳`Promise.reject`或`Promise.resolve`前發生例外，是完全沒辦法控制的。
 
-結論是`Promise.reject`或`Promise.resolve`只用於單純的傳入物件、值或外部的 thenable 物件，轉換為 Promise 物件的場合。如果你要把一整段程式碼語句或函式轉為 Promise 物件，不要用這兩個靜態方法，要使用 Promise 建構式來產生物件才是正解。
+## 結論
 
-> 註: 在 Promises/A+並沒有關於`Promise.reject`或`Promise.resolve`的定義，它們是 ES6 Promise 標準中的實作。
+`Promise.reject`或`Promise.resolve`只用於單純的傳入物件、值或外部的 thenable 物件，轉換為 Promise 物件的場合。如果你要把一整段程式碼語句或函式轉為 Promise 物件，不要用這兩個靜態方法，要使用 Promise 建構式來產生物件才是正解。
+
+> 註: 在 Promises/A+ 標準中並沒有關於`Promise.reject`或`Promise.resolve`的定義，它們是依據 ES6 Promise 標準中的實作。

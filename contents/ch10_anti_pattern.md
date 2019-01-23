@@ -6,9 +6,9 @@ sidebar_label: 反樣式(anti-pattern)與最佳實踐
 
 反樣式(anti-pattern)是指常發生的錯誤的用法。為避免很多濳在的問題，或是導正剛開始使用的開發者，網路上有很多整理好的反樣式提供參考，以下列出常見的幾個。
 
-## 巢狀的(Nested) Promises
+## 巢狀的(Nested) Promise
 
-巢狀的(Nested) Promises 無疑是讓錯誤處理變得更加困難，而且到底程式會怎麼執行，從程式碼中很難預期最後的結果會是什麼，而且巢狀的結構對於除錯或錯誤處理都會變得更加困難。
+巢狀的(Nested) Promise 無疑是讓錯誤處理變得更加困難，而且到底程式最後會怎麼執行，從程式碼中很難預期最後的結果會是什麼。另外，巢狀結構對於除錯或錯誤處理都會變得更加困難。以下是一個程式碼範例:
 
 ```js
 firstThingAsync()
@@ -30,7 +30,7 @@ firstThingAsync()
 
 ### 解決之道之一
 
-如果你是要並行處理`firstThingAsync`函式與`secondThingAsync`函式，可以用`Promise.all`方法。
+如果你是要並行處理`firstThingAsync`函式與`secondThingAsync`函式，可以用`Promise.all`方法。以下是一個程式碼範例:
 
 ```js
 Promise.all([firstThingAsync(), secondThingAsync()])
@@ -44,7 +44,7 @@ Promise.all([firstThingAsync(), secondThingAsync()])
 
 ### 解決之道之二
 
-如果你希望`secondThingAsync`函式是可以獲得`firstThingAsync`函式先執行完的結果 result1，可以先解決`firstThingAsync`函式，得到 Promise 物件與結果 result1 後，再用`Promise.all`方法來保証`secondThingAsync`函式與結果 result1 可以並行。這個結構有點複雜，而且這是因為`then`方法可以回傳一個 Promise 物件，所以可以這樣用。
+如果你希望`secondThingAsync`函式是可以獲得`firstThingAsync`函式先執行完的結果 result1，可以先解決`firstThingAsync`函式，得到 Promise 物件與結果 result1 後，再用`Promise.all`方法來保証`secondThingAsync`函式與結果 result1 可以並行。這個結構有點複雜，而且這是因為`then`方法可以回傳一個 Promise 物件，所以可以這樣用。以下是一個程式碼範例:
 
 ```js
 firstThingAsync()
@@ -59,7 +59,7 @@ firstThingAsync()
   })
 ```
 
-## 巢狀的(Nested) Promises 之二
+## 巢狀的(Nested) Promise 之二
 
 你可能開始用 Promise 結構之後，發現你的程式碼並沒有如預期的改善，反而因為回調函式的使用，變得更難以閱讀。
 

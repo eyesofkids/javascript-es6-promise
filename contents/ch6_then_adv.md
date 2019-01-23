@@ -60,13 +60,13 @@ setTimeout(() => {
 
 值的話，就一般在 JavaScript 的各種值，這沒什麼好講的，因為`then`方法最後會回傳 Promise 物件，所以這個回傳值會跟著這個新 Promise 物件到下一個連鎖方法去，這個回傳值可以用下個`then`方法的 onFulfilled 函式取到第 1 個傳入參數值。
 
-promise 物件的話，當你不希望`then`幫你回傳 promise 物件，自己建立一個，這也是合情合理，有些設計師會乾脆把所有的的函式改寫成回傳 promise 物件，這也是 ok 的寫法。通常是使用 promise 建構式來 new 一個，或是直接用`Promise.resolve(value)`靜態方法，產生一個 fulfilled(已實現)狀態的 promise 物件。
+promise 物件的話，當你不希望`then`幫你回傳 promise 物件，自己建立一個，這也是合情合理，有些開發者會乾脆把所有的的函式改寫成回傳 promise 物件，這也是可行的寫法。通常是使用 promise 建構式來 new 一個，或是直接用`Promise.resolve(value)`靜態方法，產生一個 fulfilled(已實現)狀態的 promise 物件。
 
 thenable 物件是最特殊的，根據標準的定義為:
 
 > `thenable` 是一個有定義 then 方法的物件或函式
 
-按照標準上的解說，thenable 是提供給沒有符合標準的其他實作函式庫或框架，利用合理的`then`方法來進行同化的的方式。以最簡單的情況說明，thenable 物件是個單純物件，然後裡面有個 then 方法的定義而已，例如以下的範例:
+按照標準上的解說，thenable 是提供給沒有符合標準的其他實作函式庫或框架，利用合理的`then`方法來進行同化的的方式。以最簡單的情況說明，thenable 物件是個純物件，然後裡面有個 then 方法的定義而已，例如以下的範例:
 
 ```js
 const thenable1 = {
@@ -93,7 +93,7 @@ const thenable2 = {
 promise.then(onFulfilled, onRejected)
 ```
 
-`then`是 promise 物件中的方法，以 onFulfilled 與 onRejected 作為兩個傳入參數，有幾個規則需要遵守:
+`then`是 promise 物件中的方法，以 onFulfilled 與 onRejected 作為兩個傳入參數值，有幾個規則需要遵守:
 
 - 當 onFulfilled 或 onRejected 不是函式時，忽略跳過
 - 當 promise 是 fulfilled 時，執行 onFulfilled 函式，並帶有 promise 的 value 作為 onFulfilled 函式的傳入參數值
@@ -127,24 +127,24 @@ function finalThing(value) {
   return 0
 }
 
-//第1種傳入參數
+// 第 1 種傳入參數
 doSomething1()
   .then(doSomething2)
   .then(finalThing)
 
-//第2種傳入參數
+// 第 2 種傳入參數
 doSomething1()
   .then(doSomething2())
   .then(finalThing)
 
-//第3種傳入參數
+// 第 3 種傳入參數
 doSomething1()
   .then(function() {
     doSomething2()
   })
   .then(finalThing)
 
-//第3種傳入參數
+// 第 4 種傳入參數
 doSomething1()
   .then(function() {
     return doSomething2()
@@ -200,24 +200,24 @@ function finalThing(value) {
   })
 }
 
-//第1種傳入參數，finalThing最後的值為2
+// 第 1 種傳入參數，finalThing最後的值為2
 doSomething1()
   .then(doSomething2)
   .then(finalThing)
 
-//第2種傳入參數，finalThing最後的值為1
+//第 2 種傳入參數，finalThing最後的值為1
 doSomething1()
   .then(doSomething2())
   .then(finalThing)
 
-//第3種傳入參數，finalThing最後的值為undefined
+// 第 3 種傳入參數，finalThing最後的值為undefined
 doSomething1()
   .then(function() {
     doSomething2()
   })
   .then(finalThing)
 
-//第4種傳入參數，finalThing最後的值為2
+// 第 4 種傳入參數，finalThing最後的值為2
 doSomething1()
   .then(function() {
     return doSomething2()
@@ -247,7 +247,7 @@ doSomething2 end
 finalThing end
 ```
 
-第 3 種在`then`方法裡裡 onFulfilled 的`function(){doSomething2()}`裡面的`doSomething2()`執行語句，也是一個同步的語句，但外團的匿名函式卻是一個異步函式，因為這樣會在`doSomething1()`結束才開始執行，但是也是在`finalThing`開始後才會結束。不過流程也是怪異:
+第 3 種在`then`方法裡裡 onFulfilled 的`function(){ doSomething2() }`裡面的`doSomething2()`執行語句，也是一個同步的語句，但外團的匿名函式卻是一個異步函式，因為這樣會在`doSomething1()`結束才開始執行，但是也是在`finalThing`開始後才會結束。不過流程也是怪異:
 
 ```
 doSomething1 start
@@ -258,6 +258,6 @@ doSomething2 end
 finalThing end
 ```
 
-從這個範例中，我認為並不需要太深究其中的順序的原因是為何。這範例其實是在告訴你不要亂用`then`方法中的傳入參數值，要不就是個堂堂正正的函式，要不然就寫好一個有回傳值的匿名函式。此外，如果你要在 Promise 結構中使用其他的異步 API，更是要注意它們的執行順序，用想的還不如直接寫出來執行看看，有可能不見得是最後是你要的。
+從這個範例中，我會認為並不需要太深究其中的順序的原因是為何。這範例的主要目題，其實是在告訴你不要亂用`then`方法中的傳入參數值，要不就是個堂堂正正的函式，要不然就寫好一個有回傳值的匿名函式。更進一步，如果你要在 Promise 結構中使用其他的異步 API，要特別注意它們的執行順序，用想的還不如直接寫出來執行看看，最後結果有可能不見得是最後是你要的。
 
 > 註: 第 2 種與第 3 種是反樣式(anti-pattern)，是經常會發生錯誤的使用方式，實際使用時要避免使用。

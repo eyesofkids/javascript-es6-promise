@@ -12,7 +12,7 @@ sidebar_label: Promise.all 與 Promise.race
 Promise.all(iterable)
 ```
 
-`iterable`代表可傳入陣列(Array)之類的物件，JavaScript 內建的有實作`iterable`協定的有 String、Array、TypedArray、Map 與 Set 這幾個物件。一般使用上都只用到陣列而已。`Promise.all`方法會將陣列中的值並行運算執行，全部完成後才會接著下個`then`方法。在執行時有幾種情況:
+`iterable`代表可傳入陣列(Array)之類的物件，JavaScript 內建的有實作`iterable`協定的有 String、Array、TypedArray、Map 與 Set 這幾個物件。一般使用上都用到陣列而已。`Promise.all`方法會將陣列中的值並行運算執行，全部完成後才會接著下個`then`方法。在執行時有幾種情況:
 
 - 陣列中的索引值與執行順序無關
 - 陣列中的值如果不是 Promise 物件，會自動使用`Promise.resolve`方法來轉換
@@ -51,7 +51,7 @@ Promise.all('i am a string')
 //結果: ["i", " ", "a", "m", " ", "a", " ", "s", "t", "r", "i", "n", "g"]
 ```
 
-`Promise.race`它的真正名稱應該是對比`Promise.all`的"any"，`Promise.all`指的是"**所有的**"陣列傳入參數的 Promise 物件都要解決(resolve)完了才進行下一步，`Promise.race`則是"**任何一個**"陣列傳入參數的 Promise 物件有解決，就會到下一步去。用"race(競賽)"這個字詞是比喻就像在賽跑一樣，只要有一個參賽者到達終點就行了，當然它的回傳值也只會是那個優勝者而已。
+`Promise.race`它的真正名稱應該是對比`Promise.all`的"any"，如果對`Promise.all`來說，指的是"**所有的**"陣列傳入參數的 Promise 物件都要解決(resolve)完了才進行下一步，`Promise.race`則是"**任何一個**"陣列傳入參數的 Promise 物件有解決，就會到下一步去。用"race(競賽)"這個字詞是比喻就像在賽跑一樣，只要有一個參賽者到達終點就行了，當然它的回傳值也只會是那個優勝者而已。
 
 `Promise.race`的規則與`Promise.all`相同，只不過實現的話，下一步的`then`方法只會獲取跑最快的(最快實現的)的那個值，一個簡單的範例如下:
 
@@ -73,7 +73,7 @@ Promise.race([p1, p2, p3])
 
 上面這個`Promise.race`範例，你把 p1 與 p2 的位置對調，就會發現最後的結果正好會對調，也就是說正好是只使用`Promise.resolve`方法的轉換情況，是和陣列中的前後順序有關的。不過因為`Promise.race`只能選出一個優腃者，p1 與 p2 應該算同時，所以也只能以陣列的順序為順序。
 
-> 註: `Promise.race`應該要多一個規則，如果陣列中有同時實現的 promise 值，以陣列中的順序優先者為回傳值
+> 註: 所以用程式範例的結果來說，`Promise.race`應該要多一個規則，如果陣列中有同時實現的 promise 值，以陣列中的順序優先者為回傳值。
 
 下面的例子是有加上每個陣列中的 Promise 物件產生時間的不同，這當然就只會回傳最快實現的那個 Promise 物件，也就是 p3。
 
@@ -97,4 +97,4 @@ Promise.race([p1, p2, p3])
   })
 ```
 
-> 註: 在 Promises/A+並沒有關於`Promise.all`或`Promise.race`的定義，它們是 ES6 Promise 標準的實作
+> 註: 在 Promises/A+ 並沒有關於`Promise.all`或`Promise.race`的定義，它們是依據 ES6 Promise 標準的實作。
