@@ -17,15 +17,15 @@ firstThingAsync()
       //巢狀Promises，不建議使用
       secondThingAsync().then(result2 => {
         // 可以存取得到result1與result2
-      });
+      })
     },
     err => {
-      console.log(err.message);
+      console.log(err.message)
     } //這裡捕捉不到錯誤
   )
   .catch(err => {
-    console.log(err.message);
-  }); //這裡捕捉不到錯誤
+    console.log(err.message)
+  }) //這裡捕捉不到錯誤
 ```
 
 ### 解決之道之一
@@ -35,11 +35,11 @@ firstThingAsync()
 ```js
 Promise.all([firstThingAsync(), secondThingAsync()])
   .then(function(value) {
-    console.log(value);
+    console.log(value)
   })
   .catch(function(err) {
-    console.log(err.message);
-  });
+    console.log(err.message)
+  })
 ```
 
 ### 解決之道之二
@@ -49,14 +49,14 @@ Promise.all([firstThingAsync(), secondThingAsync()])
 ```js
 firstThingAsync()
   .then(result1 => {
-    return Promise.all([result1, secondThingAsync(result1)]);
+    return Promise.all([result1, secondThingAsync(result1)])
   })
   .then(result2 => {
-    console.log(result2);
+    console.log(result2)
   })
   .catch(err => {
-    console.log(err.message);
-  });
+    console.log(err.message)
+  })
 ```
 
 ## 巢狀的(Nested) Promises 之二
@@ -67,13 +67,13 @@ firstThingAsync()
 
 ```js
 firstThingAsync().then(result1 => {
-  return secondThingAsync(result1, "foo").then(result2 => {
-    return thirdThingAsync(result2, "bar", 123).then(result3 => {
-      console.log(result3);
-      return result3;
-    });
-  });
-});
+  return secondThingAsync(result1, 'foo').then(result2 => {
+    return thirdThingAsync(result2, 'bar', 123).then(result3 => {
+      console.log(result3)
+      return result3
+    })
+  })
+})
 ```
 
 使用 Promise 後，原本你希望能改善程式碼的結構是這樣:
@@ -82,23 +82,23 @@ firstThingAsync().then(result1 => {
 firstThingAsync()
   .then(secondThing)
   .then(thirdThing)
-  .then(outputThing);
+  .then(outputThing)
 ```
 
 其實只要再把原本的`secondThingAsync`與`thirdThingAsync`函式，以及輸出的函式再打包一下就行了，這種稱之為平坦化你的 Promise 連鎖結構。
 
 ```js
 function secondThing(value) {
-  return secondThingAsync(value, "foo");
+  return secondThingAsync(value, 'foo')
 }
 
 function thirdThing(value) {
-  return thirdThingAsync(value, "bar", 123);
+  return thirdThingAsync(value, 'bar', 123)
 }
 
 function outputThing(value) {
-  console.log(value);
-  return value;
+  console.log(value)
+  return value
 }
 ```
 
@@ -111,11 +111,11 @@ function outputThing(value) {
 ```js
 somePromise()
   .then(() => {
-    someOtherPromise();
+    someOtherPromise()
   })
   .then(() => {
     // 你覺得someOtherPromise會回傳給你嗎？ 我想不會
-  });
+  })
 ```
 
 ### 解決之道
@@ -125,12 +125,12 @@ somePromise()
 ```js
 somePromise()
   .then(() => {
-    return someOtherPromise();
+    return someOtherPromise()
   })
   .then(() => {})
   .catch(err => {
-    console.log(err.message);
-  });
+    console.log(err.message)
+  })
 ```
 
 ## 理由(reason)不是一個 Error 物件
@@ -139,19 +139,19 @@ somePromise()
 
 ```js
 function firstThingAsync() {
-  return Promise.reject(new Error("error!"));
+  return Promise.reject(new Error('error!'))
 }
 
 firstThingAsync()
   .then(function() {
-    return secondThingAsync();
+    return secondThingAsync()
   })
   .then(function() {
-    return thirdThingAsync();
+    return thirdThingAsync()
   })
   .catch(err => {
-    console.log(err.message);
-  });
+    console.log(err.message)
+  })
 ```
 
 ## 使用 then 方法中的第二傳入參數(onRejected 函式)
@@ -171,14 +171,14 @@ firstThingAsync()
 ```js
 firstThingAsync()
   .then(function() {
-    return secondThingAsync();
+    return secondThingAsync()
   })
   .then(function() {
-    return thirdThingAsync();
+    return thirdThingAsync()
   })
   .catch(err => {
-    console.log(err.message);
-  });
+    console.log(err.message)
+  })
 ```
 
 ## 回調函式沒有名稱
@@ -191,21 +191,21 @@ firstThingAsync()
 
 ```js
 function firstThingAsync() {
-  return Promise.resolve(1);
+  return Promise.resolve(1)
 }
 
 function secondThingAsync() {
-  return Promise.reject(new Error("error!"));
+  return Promise.reject(new Error('error!'))
 }
 
 function thirdThingAsync() {
-  return Promise.resolve(1);
+  return Promise.resolve(1)
 }
 
 firstThingAsync()
   .then(secondThingAsync)
   .then(thirdThingAsync)
   .catch(err => {
-    console.log(err.stack); //stack為非標準屬性，IE9或舊版瀏覽器不能使用
-  });
+    console.log(err.stack) //stack為非標準屬性，IE9或舊版瀏覽器不能使用
+  })
 ```

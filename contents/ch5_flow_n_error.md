@@ -13,18 +13,18 @@ sidebar_label: 執行流程與錯誤處理
 ```js
 // 用throw語句取代reject
 const p1 = new Promise((resolve, reject) => {
-  throw new Error("rejected!"); // 用throw語句
+  throw new Error('rejected!') // 用throw語句
   //相當於用以下的語句
   //reject(new Error('rejected!'))
-});
+})
 
 p1.then(val => {
-  console.log(val);
-  return val + 2;
+  console.log(val)
+  return val + 2
 })
   .then(val => console.log(val))
-  .catch(err => console.log("error:", err.message))
-  .then(val => console.log("done"));
+  .catch(err => console.log('error:', err.message))
+  .then(val => console.log('done'))
 
 //最後結果:
 //error: rejected!
@@ -41,23 +41,23 @@ function initializePromise(promise, resolver) {
   try {
     resolver(
       function resolvePromise(value) {
-        resolve(promise, value);
+        resolve(promise, value)
       },
       function rejectPromise(reason) {
-        reject(promise, reason);
+        reject(promise, reason)
       }
-    );
+    )
   } catch (e) {
-    reject(promise, e);
+    reject(promise, e)
   }
 }
 
 //then方法，使用於外部thenable在用的
 function tryThen(then, value, fulfillmentHandler, rejectionHandler) {
   try {
-    then.call(value, fulfillmentHandler, rejectionHandler);
+    then.call(value, fulfillmentHandler, rejectionHandler)
   } catch (e) {
-    return e;
+    return e
   }
 }
 ```
@@ -78,18 +78,18 @@ function tryThen(then, value, fulfillmentHandler, rejectionHandler) {
 const p1 = new Promise(function(resolve, reject) {
   setTimeout(function() {
     // 這裡如果用throw，是完全不會拒絕promise
-    reject(new Error("error occur!"));
+    reject(new Error('error occur!'))
     //throw new Error('error occur!')
-  }, 1000);
-});
+  }, 1000)
+})
 
 p1.then(val => {
-  console.log(val);
-  return val + 2;
+  console.log(val)
+  return val + 2
 })
   .then(val => console.log(val))
-  .catch(err => console.log("error:", err.message))
-  .then(val => console.log("done"));
+  .catch(err => console.log('error:', err.message))
+  .then(val => console.log('done'))
 ```
 
 ## 執行流程&連鎖反應
@@ -99,28 +99,28 @@ p1.then(val => {
 ```js
 asyncThing1()
   .then(function() {
-    return asyncThing2();
+    return asyncThing2()
   })
   .then(function() {
-    return asyncThing3();
+    return asyncThing3()
   })
   .catch(function(err) {
-    return asyncRecovery1();
+    return asyncRecovery1()
   })
   .then(
     function() {
-      return asyncThing4();
+      return asyncThing4()
     },
     function(err) {
-      return asyncRecovery2();
+      return asyncRecovery2()
     }
   )
   .catch(function(err) {
-    console.log("Don't worry about it");
+    console.log("Don't worry about it")
   })
   .then(function() {
-    console.log("All done!");
-  });
+    console.log('All done!')
+  })
 ```
 
 在這篇文章中的作者也畫了一個這個範例的流程圖，你可以看一下還滿複雜的。我並不是說這張流程圖畫得不好，只是我建議初學者不要單純用只有 onFulfilled 函式的`then`方法，以及`catch`方法來看整體流程，其實很容易造成混亂。假設你今天已經有基礎了，當然一下子就可以理解。從完整的`then`方法，可以把整個流程看得更清楚，每個`then`方法(或`catch`方法)都會回傳一個完整的 Promise 物件，當新的 Promise 往下個`then`方法傳遞時，因為其中程式碼執行的不同，狀態也不同。
@@ -151,7 +151,7 @@ async1()
   .catch(err => errorHandler1())
   .then(() => async4(), err => errorHandler2())
   .catch(err => console.log("Don't worry about it"))
-  .then(() => console.log("All done!"));
+  .then(() => console.log('All done!'))
 ```
 
 然後再把`then`方法中的兩個函式傳入參數都補齊，`catch`方法也改用`then`方法來改寫。這樣作只是要方便解說這個規則影響流程是怎麼跑的。實際使用你應該還是用`then`與`catch`的組合。
@@ -163,7 +163,7 @@ async1()
   .then(undefined, err => errorHandler1())
   .then(() => async4(), err => errorHandler2())
   .then(undefined, err => console.log("Don't worry about it"))
-  .then(() => console.log("All done!"), undefined);
+  .then(() => console.log('All done!'), undefined)
 ```
 
 情況: 當 async1 回傳的 promise 物件的狀態是 rejected 時。以下為每個步驟流程的說明:

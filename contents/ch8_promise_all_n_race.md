@@ -8,8 +8,8 @@ sidebar_label: Promise.all 與 Promise.race
 
 `Promise.all`是"**並行運算**"使用的靜態方法，它的語法如下(出自[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)):
 
-```
-Promise.all(iterable);
+```js
+Promise.all(iterable)
 ```
 
 `iterable`代表可傳入陣列(Array)之類的物件，JavaScript 內建的有實作`iterable`協定的有 String、Array、TypedArray、Map 與 Set 這幾個物件。一般使用上都只用到陣列而已。`Promise.all`方法會將陣列中的值並行運算執行，全部完成後才會接著下個`then`方法。在執行時有幾種情況:
@@ -20,19 +20,19 @@ Promise.all(iterable);
 - 實現完成後，接下來的 then 方法會獲取到的值是陣列值
 
 ```js
-const p1 = Promise.resolve(3);
-const p2 = 1337;
+const p1 = Promise.resolve(3)
+const p2 = 1337
 const p3 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve("foo"), 1000);
-});
+  setTimeout(() => resolve('foo'), 1000)
+})
 
 Promise.all([p1, p2, p3])
   .then(value => {
-    console.log(value);
+    console.log(value)
   })
   .catch(err => {
-    console.log(err.message);
-  });
+    console.log(err.message)
+  })
 
 //結果: [3, 1337, "foo"]
 ```
@@ -40,13 +40,13 @@ Promise.all([p1, p2, p3])
 你可能會好奇，String(字串)類型是可以傳到`Promise.all`中的參數，傳入後會變成什麼樣子，當然實際上應該沒人這樣在用的。以下為一個簡單的範例:
 
 ```js
-Promise.all("i am a string")
+Promise.all('i am a string')
   .then(value => {
-    console.log(value);
+    console.log(value)
   })
   .catch(err => {
-    console.log(err.message);
-  });
+    console.log(err.message)
+  })
 
 //結果: ["i", " ", "a", "m", " ", "a", " ", "s", "t", "r", "i", "n", "g"]
 ```
@@ -56,19 +56,19 @@ Promise.all("i am a string")
 `Promise.race`的規則與`Promise.all`相同，只不過實現的話，下一步的`then`方法只會獲取跑最快的(最快實現的)的那個值，一個簡單的範例如下:
 
 ```js
-const p1 = Promise.resolve(3);
-const p2 = 1337;
+const p1 = Promise.resolve(3)
+const p2 = 1337
 const p3 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve("foo"), 1000);
-});
+  setTimeout(() => resolve('foo'), 1000)
+})
 
 Promise.race([p1, p2, p3])
   .then(value => {
-    console.log(value);
+    console.log(value)
   })
   .catch(err => {
-    console.log(err.message);
-  });
+    console.log(err.message)
+  })
 ```
 
 上面這個`Promise.race`範例，你把 p1 與 p2 的位置對調，就會發現最後的結果正好會對調，也就是說正好是只使用`Promise.resolve`方法的轉換情況，是和陣列中的前後順序有關的。不過因為`Promise.race`只能選出一個優腃者，p1 與 p2 應該算同時，所以也只能以陣列的順序為順序。
@@ -79,22 +79,22 @@ Promise.race([p1, p2, p3])
 
 ```js
 const p1 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve("p1"), 2000);
-});
+  setTimeout(() => resolve('p1'), 2000)
+})
 const p2 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve("p2"), 1000, "p2");
-});
+  setTimeout(() => resolve('p2'), 1000, 'p2')
+})
 const p3 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve("p3"), 500, "p3");
-});
+  setTimeout(() => resolve('p3'), 500, 'p3')
+})
 
 Promise.race([p1, p2, p3])
   .then(value => {
-    console.log(value);
+    console.log(value)
   })
   .catch(err => {
-    console.log(err.message);
-  });
+    console.log(err.message)
+  })
 ```
 
 > 註: 在 Promises/A+並沒有關於`Promise.all`或`Promise.race`的定義，它們是 ES6 Promise 標準的實作

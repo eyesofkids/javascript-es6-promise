@@ -2,6 +2,8 @@
 
 > [2019-01-23] 本書正在進行修訂中，部份章節內容可能尚未完整
 
+> [2019-01-23] 由於 Gitbook 之前網址全部變動，加上系統有點不太穩定，目前主要的內容將移轉到新網站中，本書的新網址為[http://promise.eddychang.me](http://promise.eddychang.me)
+
 這是一本學習 JavaScript 程式語言中，有關 Promise 語法的中文入門書籍。
 
 本書原本是[從 ES6 開始的 JavaScript 學習生活](https://legacy.gitbook.com/book/eyesofkids/javascript-start-from-es6/details)書中的一個章節，由於涉及的相關內容較多，而且有獨立的主題，所以移出來成為一本小型的電子書。

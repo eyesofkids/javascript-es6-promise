@@ -9,43 +9,43 @@ sidebar_label: Promise.resolve 與 Promise.reject
 `Promise.resolve`是一個靜態方法，也就是說它前面一定要加上`Promise`這樣呼叫的方法。`Promise.resolve`等於是要產生 fulfilled(已實現)狀態的 Promise 物件，它相當於直接回傳一個以`then`方法實現的新 Promise 物件，帶有傳入的參數值，這個方法的傳入值有三種，相當於`then`方法中 onFulfilled 函式的回傳值(上一章的內容中有說)，語法如下:
 
 ```js
-Promise.resolve(value);
-Promise.resolve(promise);
-Promise.resolve(thenable);
+Promise.resolve(value)
+Promise.resolve(promise)
+Promise.resolve(thenable)
 ```
 
 直接用`Promise.resolve`代表這個新的 Promise 物件的狀態是直接設定為 fulfilled(已實現)狀態，這方法只是方便產生根(第一個)Promise 物件使用的，也就是除了用建構式的`new Promise()`外，提供另一種方式來產生新的 Promise 物件。下面為範例:
 
 ```js
-Promise.resolve("Success").then(
+Promise.resolve('Success').then(
   function(value) {
-    console.log(value); // "Success"
+    console.log(value) // "Success"
   },
   function(value) {
     // 不會被呼叫
   }
-);
+)
 ```
 
 `Promise.reject`剛好與`Promise.resolve`相反，等於是要產生 rejected(已拒絕)狀態的新 Promise 物件。範例如下:
 
 ```js
-Promise.reject(new Error("fail")).then(
+Promise.reject(new Error('fail')).then(
   function(error) {
     // 不會被呼叫
   },
   function(error) {
-    console.log(error); // Stacktrace
+    console.log(error) // Stacktrace
   }
-);
+)
 ```
 
 `Promise.reject`與`Promise.resolve`的實作的程式碼隱藏了在內部關於 Promise 物件產生的過程，前面有提到我們不能用沒有 executor 傳入參數的 Promise 建構式來產生新的物件實體，會有錯誤發生。這兩個靜態方法，它們在實作時的確有產生沒有 executor 傳入參數的 Promise 雛形(中介)物件，只是它還不算真正會被回傳出來的 Promise 物件實體。理由主要當然是不讓程式設計師自由控制 Promise 的狀態，要改變 Promise 的狀態只有靠程式碼的執行結果才行。例如下面這一段程式碼(出自 es6-promise):
 
 ```js
-var promise = new Constructor(noop); //noop是沒有內容的函式
-_resolve(promise, object); //_resolve是內部函式，object是Promise.resolve傳入參數值
-return promise;
+var promise = new Constructor(noop) //noop是沒有內容的函式
+_resolve(promise, object) //_resolve是內部函式，object是Promise.resolve傳入參數值
+return promise
 ```
 
 `Promise.reject`與`Promise.resolve`與使用 Promise 建構式的方式，在使用上仍然有大的不同，executor 傳入參數可以讓程式設師自訂 Promise 產生的過程，而且在產生的過程中是 throw safety(安全)的。以下面的例子來說明:
@@ -55,34 +55,34 @@ return promise;
 
 function initPromise1(someObject) {
   return new Promise(function(resolve) {
-    if (typeof someObject !== "object") throw new Error("error occured");
-    else resolve(someObject);
-  });
+    if (typeof someObject !== 'object') throw new Error('error occured')
+    else resolve(someObject)
+  })
 }
 
 //方式二: 使用Promise.resolve+throw
 
 function initPromise2(someObject) {
-  if (typeof someObject !== "object") throw new Error("error occured");
-  else return Promise.resolve(someObject);
+  if (typeof someObject !== 'object') throw new Error('error occured')
+  else return Promise.resolve(someObject)
 }
 
 //方式三: 使用Promise.resolve+Promise.reject
 
 function initPromise3(someObject) {
-  if (typeof someObject !== "object")
-    return Promise.reject(new Error("error occured"));
-  else return Promise.resolve(someObject);
+  if (typeof someObject !== 'object')
+    return Promise.reject(new Error('error occured'))
+  else return Promise.resolve(someObject)
 }
 
 //測試用
 initPromise1(1)
   .then(value => {
-    console.log(value);
+    console.log(value)
   })
   .catch(err => {
-    console.log(err.message);
-  });
+    console.log(err.message)
+  })
 ```
 
 如果此時傳入的`someObject`不是物件類型，方式二會直接 throw 出例外，造成程式中斷，與 Promise 結構中對錯誤的處理方式不同，只有方式一或方式三可以正常的處理錯誤。

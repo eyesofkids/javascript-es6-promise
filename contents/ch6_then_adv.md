@@ -12,7 +12,7 @@ sidebar_label: 深入 then 方法
 
 ### promise 中會用到的回調函式，都是在執行時會以異步執行的回調函式嗎？
 
-**當然**。~~其實我想打的是"廢話"，要不然用 Promise 作什麼…~~
+**當然**。
 
 ### 一個 promise 物件經過 then 後，原本的 promise 物件的內容會改變？
 
@@ -20,28 +20,28 @@ sidebar_label: 深入 then 方法
 
 ```js
 const promise = new Promise(function(resolve, reject) {
-  resolve(1);
-});
+  resolve(1)
+})
 
-const p = promise;
+const p = promise
 
 const p1 = promise.then(value => {
-  console.log(value);
-  return value + 1;
-});
+  console.log(value)
+  return value + 1
+})
 
 const p2 = promise.then(value => {
-  console.log(value);
-  return value + 1;
-});
+  console.log(value)
+  return value + 1
+})
 
 //延時執行
 setTimeout(() => {
-  console.log(p1);
-  console.log(p2);
-  console.log(p1 === p2); //false
-  console.log(p === promise); //true
-}, 5000);
+  console.log(p1)
+  console.log(p2)
+  console.log(p1 === p2) //false
+  console.log(p === promise) //true
+}, 5000)
 ```
 
 ## `then`方法中 onFulfilled 函式的回傳值
@@ -71,16 +71,16 @@ thenable 物件是最特殊的，根據標準的定義為:
 ```js
 const thenable1 = {
   then: function(onFulfill, onReject) {
-    onFulfill("fulfilled!");
-  }
-};
+    onFulfill('fulfilled!')
+  },
+}
 
 const thenable2 = {
   then: function(resolve) {
-    throw new TypeError("Throwing");
-    resolve("Resolving");
-  }
-};
+    throw new TypeError('Throwing')
+    resolve('Resolving')
+  },
+}
 ```
 
 ## then 中傳入參數值
@@ -109,47 +109,47 @@ promise2 = promise1.then(onFulfilled, onRejected)
 
 ```js
 function doSomething1() {
-  console.log("doSomething1 start");
+  console.log('doSomething1 start')
   return new Promise(function(resolve, reject) {
-    console.log("doSomething1 end");
-    resolve(1);
-  });
+    console.log('doSomething1 end')
+    resolve(1)
+  })
 }
 
 function doSomething2() {
-  console.log("doSomething2");
-  return 2;
+  console.log('doSomething2')
+  return 2
 }
 
 function finalThing(value) {
-  console.log("finalThing");
-  console.log(value);
-  return 0;
+  console.log('finalThing')
+  console.log(value)
+  return 0
 }
 
 //第1種傳入參數
 doSomething1()
   .then(doSomething2)
-  .then(finalThing);
+  .then(finalThing)
 
 //第2種傳入參數
 doSomething1()
   .then(doSomething2())
-  .then(finalThing);
+  .then(finalThing)
 
 //第3種傳入參數
 doSomething1()
   .then(function() {
-    doSomething2();
+    doSomething2()
   })
-  .then(finalThing);
+  .then(finalThing)
 
 //第3種傳入參數
 doSomething1()
   .then(function() {
-    return doSomething2();
+    return doSomething2()
   })
-  .then(finalThing);
+  .then(finalThing)
 ```
 
 第 1 種: 正常的函式傳入參數。最後的`finalThing`可以得到`doSomething2`回傳值`2`。
@@ -170,59 +170,59 @@ doSomething1()
 
 ```js
 function doSomething1() {
-  console.log("doSomething1 start");
+  console.log('doSomething1 start')
   return new Promise(function(resolve, reject) {
     setTimeout(function() {
-      console.log("doSomething1 end");
-      resolve(1);
-    }, 1000);
-  });
+      console.log('doSomething1 end')
+      resolve(1)
+    }, 1000)
+  })
 }
 
 function doSomething2() {
-  console.log("doSomething2 start");
+  console.log('doSomething2 start')
   return new Promise(function(resolve, reject) {
     setTimeout(function() {
-      console.log("doSomething2 end");
-      resolve(2);
-    }, 1000);
-  });
+      console.log('doSomething2 end')
+      resolve(2)
+    }, 1000)
+  })
 }
 
 function finalThing(value) {
-  console.log("finalThing start");
+  console.log('finalThing start')
   return new Promise(function(resolve, reject) {
     setTimeout(function() {
-      console.log("finalThing end");
-      console.log(value);
-      resolve(0);
-    }, 1000);
-  });
+      console.log('finalThing end')
+      console.log(value)
+      resolve(0)
+    }, 1000)
+  })
 }
 
 //第1種傳入參數，finalThing最後的值為2
 doSomething1()
   .then(doSomething2)
-  .then(finalThing);
+  .then(finalThing)
 
 //第2種傳入參數，finalThing最後的值為1
 doSomething1()
   .then(doSomething2())
-  .then(finalThing);
+  .then(finalThing)
 
 //第3種傳入參數，finalThing最後的值為undefined
 doSomething1()
   .then(function() {
-    doSomething2();
+    doSomething2()
   })
-  .then(finalThing);
+  .then(finalThing)
 
 //第4種傳入參數，finalThing最後的值為2
 doSomething1()
   .then(function() {
-    return doSomething2();
+    return doSomething2()
   })
-  .then(finalThing);
+  .then(finalThing)
 ```
 
 執行的結果會出乎想像，只有第 1 種與第 4 種，才是完整的 Promise 流程順序，也就是像下面的流程:

@@ -13,10 +13,10 @@ sidebar_label: Promise物件建立與基本使用
 ```js
 const promise = new Promise(function(resolve, reject) {
   // 成功時
-  resolve(value);
+  resolve(value)
   // 失敗時
-  reject(reason);
-});
+  reject(reason)
+})
 
 promise.then(
   function(value) {
@@ -25,7 +25,7 @@ promise.then(
   function(reason) {
     // on rejection(已拒絕時)
   }
-);
+)
 ```
 
 首先先看 Promise 的建構函式，它的語法如下(來自[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)):
@@ -49,10 +49,10 @@ new Promise( (resolve, reject) => { ... } )
 ```js
 function asyncFunction(value) {
   return new Promise(function(resolve, reject) {
-    if (value) resolve(value);
+    if (value) resolve(value)
     // 已實現，成功
-    else reject(reason); // 有錯誤，已拒絕，失敗
-  });
+    else reject(reason) // 有錯誤，已拒絕，失敗
+  })
 }
 ```
 
@@ -65,19 +65,19 @@ Promise 建構函式與 Promise.prototype 物件的設計，主要是要讓設�
 ```js
 const promise = new Promise(function(resolveParam, rejectParam) {
   //resolveParam(1)
-  rejectParam(new Error("error!"));
-});
+  rejectParam(new Error('error!'))
+})
 
 promise
   .then(value => {
-    console.log(value); // 1
-    return value + 1;
+    console.log(value) // 1
+    return value + 1
   })
   .then(value => {
-    console.log(value); // 2
-    return value + 2;
+    console.log(value) // 2
+    return value + 2
   })
-  .catch(err => console.log(err.message));
+  .catch(err => console.log(err.message))
 ```
 
 為什麼可以換傳入參數值的名稱？要回答這個問題，要先來解說一下進入 Promise 建構函式的大概執行流程，當然下面都是簡化過的說明:
@@ -91,14 +91,14 @@ promise
 ```js
 //內部用的雛形物件，實作上包含在建構式中用this
 const pInternal = {
-  state: "pending",
+  state: 'pending',
   value: undefined,
-  reason: undefined
-};
+  reason: undefined,
+}
 
 //這個就是稱為executor的傳入參數
 function resolver(resolve, reject) {
-  resolve(10);
+  resolve(10)
   //reject(new Error('error occured !'))
 }
 
@@ -107,36 +107,36 @@ function init(promise, resolver) {
   try {
     resolver(
       function resolvePromise(value) {
-        _resolve(promise, value);
+        _resolve(promise, value)
       },
       function rejectPromise(reason) {
-        _reject(promise, reason);
+        _reject(promise, reason)
       }
-    );
+    )
   } catch (e) {
-    _reject(promise, e);
+    _reject(promise, e)
   }
 
-  return promise;
+  return promise
 }
 
 //隱藏在內部的私有函式
 function _resolve(promise, value) {
-  console.log(value);
-  promise.state = "onFulfilled";
-  promise.value = value;
+  console.log(value)
+  promise.state = 'onFulfilled'
+  promise.value = value
 }
 
 //隱藏在內部的私有函式
 function _reject(promise, reason) {
-  console.log(reason);
-  promise.state = "onRejected";
-  promise.reason = reason;
+  console.log(reason)
+  promise.state = 'onRejected'
+  promise.reason = reason
 }
 
 //最後生成回傳的promise物件
-const promise = init(pInternal, resolver);
-console.log(promise);
+const promise = init(pInternal, resolver)
+console.log(promise)
 ```
 
 以上面的範例來說，`resolver`函式在`init`中被呼叫時，`resolver`的第 1 個傳入參數，它的執行程式碼內容會被`init`中的`resolver`呼叫時的第一個傳入參數`resolvePromise`所取代，然後再加上`init`函式傳入參數`promise`物件，最後呼叫執行`_resolve(promise, value)`這個內部私有方法。也就是說這只是一個函式傳入參數的代換過程。所以如果你改成這樣也是一樣的結果:
@@ -144,7 +144,7 @@ console.log(promise);
 ```js
 //這個就是稱為executor的傳入參數
 function resolver(rs, rj) {
-  rs(10);
+  rs(10)
   //rj(new Error('error occured !'))
 }
 
@@ -153,14 +153,14 @@ function init(promise, resolver) {
   //改用匿名函式
   resolver(
     function(value) {
-      _resolve(promise, value);
+      _resolve(promise, value)
     },
     function(reason) {
-      _reject(promise, reason);
+      _reject(promise, reason)
     }
-  );
+  )
 
-  return promise;
+  return promise
 }
 ```
 
@@ -169,7 +169,7 @@ function init(promise, resolver) {
 ```js
 //這個就是稱為executor的傳入參數
 function resolver(rs, rj) {
-  rs(10);
+  rs(10)
   //rj(new Error('error occured !'))
 }
 
@@ -179,18 +179,18 @@ function init(promise, resolver) {
   resolver(
     value => _resolve(promise, value),
     reason => _reject(promise, reason)
-  );
-  return promise;
+  )
+  return promise
 }
 ```
 
 那麼 executor(執行者，執行函式)是必要的傳入參數值嗎？是的，如果你沒傳入任何的參數，會產生一個類型錯誤，錯誤訊息中有一個 resolver(解決者，解決函式)字詞，它應該算是 executor 的別名(或者是第一個函式型傳入參數的名稱?)，如果你傳入一個空白函式，雖然不會有錯誤發生，但會產生一個完全無三小路用的 Promise 物件:
 
 ```js
-const promise = new Promise();
+const promise = new Promise()
 //Uncaught TypeError: Promise resolver undefined is not a function
 
-const promise = new Promise(function() {});
+const promise = new Promise(function() {})
 //不會有錯誤，但會產生一個完全無用的promise，無法改變狀態
 //Promise {[[PromiseStatus]]: "pending", [[PromiseValue]]: undefined}
 ```
@@ -209,12 +209,12 @@ const promise = new Promise(function() {});
 
 ### then 與 catch
 
-> then 方法是 Promise 的最核心方法，標準有八成都是在定義 then 方法
+> then 方法是 Promise 的最核心方法，標準規則有極大一部份都是在定義 then 方法
 
 在 Promise 的標準中，一直不斷的提到一個方法 - `then`，中文是"然後、接著、接下來"的意思，這個是一個 Promise 的重要方法。有定義 then 方法的物件被稱之為`thenable`物件，標準中花了一個章節在講`then`方法的規格，它的語法如下(出自[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then)):
 
 ```js
-p.then(onFulfilled, onRejected);
+p.then(onFulfilled, onRejected)
 
 p.then(
   function(value) {
@@ -223,7 +223,7 @@ p.then(
   function(reason) {
     // rejection
   }
-);
+)
 ```
 
 `then`方法一樣用兩個函式當作傳入參數，`onFulfilled`是當 promise 物件的狀態轉變為 fulfilled(已實現)呼叫的函式，有一個傳入參數值可用，就是 value(值)。而`onRejected`是當 promise 物件的狀態轉變為 rejected(已拒絕)呼叫的函式，也有一個傳入參數值可以用，就是 reason(理由)。
@@ -240,21 +240,21 @@ p.then(
 
 ```js
 const promise = new Promise(function(resolve, reject) {
-  resolve(1);
-});
+  resolve(1)
+})
 
 promise
   .then(function(value) {
-    console.log(value); // 1
-    return value + 1;
+    console.log(value) // 1
+    return value + 1
   })
   .then(function(value) {
-    console.log(value); // 2
-    return value + 2;
+    console.log(value) // 2
+    return value + 2
   })
   .then(function(value) {
-    console.log(value); // 4
-  });
+    console.log(value) // 4
+  })
 ```
 
 `then`方法中的 onFulfilled 函式，也就是第一個函式傳入參數，它是有值時使用的函式，經過連鎖的結構，如果要把值往下傳遞，可以用回傳值的方式，上面的例子可以看到用`return`語句來回傳值，這個值可以繼續的往下面的`then`方法傳送。
@@ -266,11 +266,11 @@ onRejected 函式，也就是`then`方法中第二個函式的傳入參數，也
 而錯誤處理通常交給另一個`catch`方法來作，`catch`只需要一個函式傳入參數，(出自[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch)):
 
 ```js
-p.catch(onRejected);
+p.catch(onRejected)
 
 p.catch(function(reason) {
   // rejection
-});
+})
 ```
 
 `catch`方法相當於`then(undefined, onRejected)`，也就是`then`方法的第一個函式傳入參數沒有給定值的情況，它算是個`then`方法的語法糖。`catch`方法正如其名，它就是要取代同步`try...catch`語句用的異步例外處理方式。
@@ -281,22 +281,22 @@ p.catch(function(reason) {
 
 ```js
 const p1 = new Promise((resolve, reject) => {
-  resolve(4);
-});
+  resolve(4)
+})
 
 p1.then(val => {
-  console.log(val); //4
-  return val + 2;
+  console.log(val) //4
+  return val + 2
 })
   .then(val => {
-    console.log(val); //6
-    throw new Error("error!");
+    console.log(val) //6
+    throw new Error('error!')
   })
   .catch(err => {
     //catch無法抓到上個promise的回傳值
-    console.log(err.message);
+    console.log(err.message)
     //這裡如果有回傳值，下一個then可以抓得到
     //return 100
   })
-  .then(val => console.log(val, "done")); //val是undefined，回傳值消息
+  .then(val => console.log(val, 'done')) //val是undefined，回傳值消息
 ```

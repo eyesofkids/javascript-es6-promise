@@ -8,10 +8,10 @@ sidebar_label: 實例&程式碼片段
 
 ```js
 function delay(ms) {
-  ms = Number(ms);
-  ms = Number.isNaN(ms) ? +0 : Math.max(ms, +0);
+  ms = Number(ms)
+  ms = Number.isNaN(ms) ? +0 : Math.max(ms, +0)
 
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 ```
 
@@ -24,16 +24,16 @@ function delay(ms) {
   return function(result) {
     return new Promise(function(resolve, reject) {
       setTimeout(function() {
-        resolve(result);
-      }, ms);
-    });
-  };
+        resolve(result)
+      }, ms)
+    })
+  }
 }
 
 //使用範例
-delay(1000)("hello").then(function(result) {
-  console.log(result);
-});
+delay(1000)('hello').then(function(result) {
+  console.log(result)
+})
 ```
 
 > 出自[Fun with promises in JavaScript](https://www.stephanboyer.com/post/107/fun-with-promises-in-javascript)
@@ -43,33 +43,33 @@ delay(1000)("hello").then(function(result) {
 ```js
 function ajax(url, method, data) {
   return new Promise(function(resolve, reject) {
-    var request = new XMLHttpRequest();
+    var request = new XMLHttpRequest()
 
-    request.responseType = "text";
+    request.responseType = 'text'
 
     request.onreadystatechange = function() {
       if (request.readyState === XMLHttpRequest.DONE) {
         if (request.status === 200) {
-          resolve(request.responseText);
+          resolve(request.responseText)
         } else {
-          reject(new Error(request.statusText));
+          reject(new Error(request.statusText))
         }
       }
-    };
+    }
 
     request.onerror = function() {
-      reject(new Error("Network Error"));
-    };
+      reject(new Error('Network Error'))
+    }
 
-    request.open(method, url, true);
-    request.send(data);
-  });
+    request.open(method, url, true)
+    request.send(data)
+  })
 }
 
 //使用範例
-ajax("/", "GET").then(function(result) {
-  console.log(result);
-});
+ajax('/', 'GET').then(function(result) {
+  console.log(result)
+})
 ```
 
 > 出自[Fun with promises in JavaScript](https://www.stephanboyer.com/post/107/fun-with-promises-in-javascript)
@@ -81,14 +81,14 @@ function ajax(options) {
   return new Promise(function(resolve, reject) {
     $.ajax(options)
       .done(resolve)
-      .fail(reject);
-  });
+      .fail(reject)
+  })
 }
 
 //使用範例
-ajax({ url: "/" }).then(function(result) {
-  console.log(result);
-});
+ajax({ url: '/' }).then(function(result) {
+  console.log(result)
+})
 ```
 
 > 出自[Fun with promises in JavaScript](https://www.stephanboyer.com/post/107/fun-with-promises-in-javascript)
@@ -105,12 +105,12 @@ ajax({ url: "/" }).then(function(result) {
 db.allDocs({ include_docs: true })
   .then(function(result) {
     result.rows.forEach(function(row) {
-      db.remove(row.doc);
-    });
+      db.remove(row.doc)
+    })
   })
   .then(function() {
     // 到這裡所有的文件都已經被刪除
-  });
+  })
 ```
 
 ### 正確用法
@@ -122,13 +122,13 @@ db.allDocs({ include_docs: true })
   .then(function(result) {
     return Promise.all(
       result.rows.map(function(row) {
-        return db.remove(row.doc);
+        return db.remove(row.doc)
       })
-    );
+    )
   })
   .then(function(arrayOfResults) {
     // 到這裡所有的文件都已經被刪除
-  });
+  })
 ```
 
 > 出自[We have a problem with promises](https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html)
@@ -138,9 +138,9 @@ db.allDocs({ include_docs: true })
 ```js
 function promiseCall(f, ...args) {
   try {
-    return Promise.resolve(f(...args));
+    return Promise.resolve(f(...args))
   } catch (e) {
-    return Promise.reject(e);
+    return Promise.reject(e)
   }
 }
 ```
