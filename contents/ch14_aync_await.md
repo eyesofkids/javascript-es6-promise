@@ -98,11 +98,11 @@ updateMyView().catch(error => {
 })
 ```
 
-> 註: 上面的例子可以使用 catch 方法，當然也可以使用 then 方法
-
 由上面的改寫範例，你可以看到我們雖然是在撰寫異步的程序，但寫出來的程式碼卻是像是在撰寫同步的程序。有被加上 await 的語句，會等待到該語句執行的結果得到後，才會接著處理下一步的程序語句。這使得整體的程式碼可閱讀性提高了，而且也變得更容易除錯。
 
-> 註: 目前 await 不能在全域(頂級作用域)直接使用，它一定要在 async 函式內才能使用
+> 註: 上面的例子可以使用 catch 方法，當然也可以使用 then 方法
+
+> 註: await 不能在全域(頂級)作用域直接使用，它一定要在 async 函式內才能使用
 
 ## async 函式的語法說明
 
@@ -163,9 +163,7 @@ asyncFunc1().then(console.log)
 asyncFunc2().then(console.log)
 ```
 
-這當然是因為 async 函式可以包裹住在其中非 Promise 的程式語句，最後回傳一個 Promise。但這裡面仍然有一個小小的差異，上面範例中的 asyncFunc 函式，它的回傳是`Promise {<resolved>: 1}`，也就是已經實現的(resolved 或 fulfilled)的 Promise 狀態，但後面兩個回傳 Promise 的 async 函式，它們的 Promise 狀態都還是`Promise {<pending>}`，也就是說還沒真正固定狀態到已實現或已拒絕，需要再下一步的 then 接上去後，才會進行解析。
-
-> 註: 在 JavaScript 中的函式主體內，最後沒有寫 return 回傳值，相當於 return undefined，也算有回傳值。
+這當然是因為 async 函式可以包裹住在其中非 Promise 的程式語句，最後回傳一個 Promise。但這裡面仍然有一個小小的差異，上面範例中的 asyncFunc 函式，它的回傳是`Promise {<resolved>: 1}`，也就是已經實現的(resolved 或 fulfilled)的 Promise 狀態，但後面兩個回傳 Promise 的 async 函式，它們的 Promise 狀態都還是`Promise {<pending>}`，也就是說還沒真正固定狀態到已實現或已拒絕，需要再下一步的 then 接上去後，才會進行解析。不過，在最後的執行結果並無差異，這只是一個過程中的小細節而已。
 
 async 函式會轉變成為一個異步的函式，但它與原本的 JavaScript 中函式裡的建構式不同，是使用新的 AsyncFunction 作為建構式來建立函式物件，也就是說它與原本的函式物件的結構並不相同。
 
@@ -177,9 +175,11 @@ async 函式的語法可以用於各種函式宣告的語法，沒有什麼限�
 - 物件字面定義內的物件方法
 - 類別定義中的方法
 
+> 註: 在 JavaScript 中的函式主體內，最後沒有寫 return 回傳值，相當於 `return undefined`，也算是有回傳值。
+
 ### await 運算子
 
-await 是一個運算子，使用這個關鍵字在表達式前作為修飾字詞，會讓表達式變為"等待 Promise 解析的表達式"，await 只能在 async 函式內使用，不能在一般的函式內使用。
+await 是一個運算子，使用這個關鍵字在表達式前作為修飾關鍵字詞，會讓表達式變為 "等待 Promise 解析的表達式"，await 只能在 async 函式內使用，不能在一般的函式內使用。
 
 await 的語法如下，出自 [MDN 這裡](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Operators/await):
 
@@ -189,11 +189,13 @@ await 的語法如下，出自 [MDN 這裡](https://developer.mozilla.org/zh-TW/
 
 > [rv] 回傳 Promise 物件的 resolved 值，如果當值不是 Promise 物件時，則會回傳該值本身。
 
-await 會讓 JavaScript 程式進行等待(暫停)，等到後面接著表達式的 Promise 的狀態已經固定了(settled)，然後回傳這個 Promise 的 resolved 值，才會再進行下一個語句，因為這裡要得到的是值，而不是像 Promise 結構中一個可以往下傳的另一個 Promise 物件。
+await 會讓 JavaScript 程式進行等待(暫停)，等到後面接著表達式的 Promise 的狀態已經固定了(settled)，然後回傳這個 Promise 的 resolved(已實現) 值，才會再進行下一個語句，要注意這裡得到的是值(Promise 的已實現值，如果是已實現狀態的話)，而不是像 Promise 結構中一個可以往下傳的另一個 Promise 物件。
 
 多個 await 表達式組合，是一種"順序操作(sequential)"的執行程序，就像是同步語句組合的語法，但實際上是非阻塞的、異步執行的語句組合。
 
 `await 表達式`也是一個表達式，它可以像一般的表達式在各種語法中使用，當然也這一定是在要 async 函式之中。
+
+> await 這個英文字詞也是有 "等待、等候" 意思的動詞，它與另一個常用的英文字詞 wait 意思相近。wait 後面通常會加上 for，經常使用在等候某人、等公車、等聖誕老公公…等等，它也可以不需要加上後面的受詞。 await 則會用於比 wait 較為正式的場合或書面文章，它有預期某事物會延時發生的意思，後面必定要加上受詞，經常用於例如等候法院判決、等候合約審查、等候某人作決定…等等情況。
 
 ## 瀏覽器相容議題
 
@@ -203,6 +205,4 @@ Google 瀏覽器的 V8 引擎在很早之前就開始支援 async 函式功能�
 
 ## 參考資源
 
-- [14.6async Function Definitions - ECMAScript 2017](https://www.ecma-international.org/ecma-262/8.0/#sec-async-function-definitions)
-
-> await 這個英文字詞也是 "等待、等候" 的動詞，它與另一個常用的英文字詞 wait 意思相近。wait 通常會加上 for，經常使用在等待某人、等公車、等聖誕老公公…，它也可以不需要加上後面的受詞。而 await 除了比 wait 使用於較為正式的場合外，它有預期某事物會延時發生的意思，後面必定要加上受詞，經常用於例如等候法院判決、等候合約審查、等候某人作決定等等使用情況。
+- [14.6 Async Function Definitions - ECMAScript 2017](https://www.ecma-international.org/ecma-262/8.0/#sec-async-function-definitions)

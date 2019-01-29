@@ -1,5 +1,10 @@
 # 更新日誌 Changelog
 
+### [1.3.1] - 2019-01-29
+
+- 加入 - async 函式 章節(未完成)
+- 加入 - microtask 章節(未完成)
+
 ### [1.3.0] - 2019-01-23
 
 - 修改 - 所有的文章標題為 YAML Front Matter，符合 Docusaurus 規格
